@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class move : MonoBehaviour {
-
+	public AudioClip jump;
+	public AudioClip leftright;
 	// Use this for initialization
 	void Start () {
 	
@@ -12,11 +13,15 @@ public class move : MonoBehaviour {
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.Space)) 
 		{ 
+			audio.clip=jump;
+			audio.Play();
 			GetComponent<Rigidbody> ().velocity = Vector3.zero; 
 			GetComponent<Rigidbody> ().AddForce (Vector3.up*200); 
 		} 
 		if (Input.GetKeyDown (KeyCode.D)) 
 		{ 
+			audio.clip=leftright;
+			audio.Play();
 			GetComponent<Rigidbody> ().velocity = Vector3.zero; 
 			GetComponent<Rigidbody> ().AddForce (Vector3.right*100); 
 		}
@@ -30,5 +35,14 @@ public class move : MonoBehaviour {
 			GetComponent<Rigidbody> ().velocity = Vector3.zero; 
 			GetComponent<Rigidbody> ().AddForce (Vector3.left*100); 
 		}
+	}
+
+	void OnCollisionEnter(Collision other) {
+		if (other.gameObject.tag == "point")
+			other.gameObject.audio.Play ();
+	}
+	void OnCollisionExit(Collision other) {
+		if (other.gameObject.tag == "point")
+			other.gameObject.audio.Stop();
 	}
 }
